@@ -1,0 +1,57 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  creationTimestamp: null
+  name: devfile-node-sample-multi-component-example-main-h0wo
+  namespace: e2e-demo-xvyc
+spec:
+  params:
+  - name: git-revision
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      annotations:
+        appstudio.openshift.io/application: multi-component-application
+        appstudio.openshift.io/component: devfile-node-sample-multi-component-example-main-h0wo
+        build.appstudio.openshift.io/build: "true"
+        build.appstudio.openshift.io/type: build
+        build.appstudio.openshift.io/version: "0.1"
+        pipelines.appstudio.openshift.io/type: build
+      creationTimestamp: null
+      generateName: devfile-node-sample-multi-component-example-main-h0wo-
+      labels:
+        appstudio.openshift.io/application: multi-component-application
+        appstudio.openshift.io/component: devfile-node-sample-multi-component-example-main-h0wo
+        build.appstudio.openshift.io/build: "true"
+        build.appstudio.openshift.io/type: build
+        build.appstudio.openshift.io/version: "0.1"
+        pipelines.appstudio.openshift.io/type: build
+      namespace: e2e-demo-xvyc
+    spec:
+      params:
+      - name: git-url
+        value: https://github.com/redhat-appstudio-qe/multi-component-example-main
+      - name: output-image
+        value: quay.io/mkovarik/test-images:218f0c20b0ea423e82c59900c3e0bfd8-$(tt.params.git-revision)
+      - name: dockerfile
+        value: https://raw.githubusercontent.com/redhat-appstudio-qe/multi-component-example-main/main/devfile-node-sample/Dockerfile
+      - name: path-context
+        value: devfile-node-sample
+      pipelineRef:
+        bundle: quay.io/redhat-appstudio/build-templates-bundle:13f5d9c921b3f727684a00084037f673a0dc4273
+        name: docker-build
+      workspaces:
+      - name: workspace
+        volumeClaimTemplate:
+          metadata:
+            creationTimestamp: null
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+          status: {}
+    status: {}
+status: {}

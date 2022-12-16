@@ -1,0 +1,23 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: devfile-node-sample-multi-component-example-main-h0wo
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: devfile-node-sample-multi-component-example-main-h0wo
+    app.kubernetes.io/part-of: multi-component-application
+  name: devfile-node-sample-multi-component-example-main-h0wo
+  namespace: e2e-demo-xvyc
+spec:
+  port:
+    targetPort: 3001
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: devfile-node-sample-multi-component-example-main-h0wo
+    weight: 100
+status: {}
